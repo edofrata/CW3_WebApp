@@ -21,7 +21,8 @@
                     </div>
                     
                     <div v-else>
-                        <checkout :product="product" @submitOrder='submit_order' @productRemove='item_remove' :cart="cart"></checkout>
+                        <checkout :price="price" :order="order" :phone="phone" :name="name" :product="product" :cart="cart" 
+                                  @shoppingPrice='shopping_price' @checkPhone='check_phone' @checkName='check_name' @submitOrder='submit_order' @productRemove='item_remove' ></checkout>
                     </div>
                 </main>
             </div>
@@ -51,11 +52,29 @@ export default {
       product : [],
     //   currentPage : lessonsFile,
       show_products : true,
+      phone: false,
+      name:false,
+      price : 0,
+
+        order: {
+            full_name: '',
+            phone_number: '',
+            price: '',
+            lessons_booked: [],
+        } ,
+
    
     }   
   },
 
-  props: ['addProduct()', 'no_double()', 'Update()',' cartItemCount()', 'showPage()' ],  
+  props: [
+      'addProduct()',
+       'no_double()', 
+       'Update()',
+       ' cartItemCount()',
+        'showPage()',
+        
+        ],  
   
   created(){
     this.product = lessonsFile.productList;
@@ -161,9 +180,9 @@ export default {
              //  submit order function 
             submit_order() {
 
-                if (Checkout.check_name() && Checkout.check_phone()) {
-                    Checkout.order.lessons_booked.push(this.cart);
-                    Checkout.order.price = Checkout.shopping_price();
+                if (this.name && this.phone) {
+                    this.order.lessons_booked.push(this.cart);
+                    this.order.price = this.shopping_price();
                     for (let i = 0; i < this.cart.length; i++) {
                         let booking = this.product.map(function (x) { return x._id; }).indexOf(this.cart[i]._id);
                         this.Update(this.cart[i]._id, booking);
@@ -172,10 +191,10 @@ export default {
                     alert('SUCCESS! Your Order went through');
 
                     // clearing up all variables
-                    Checkout.order.full_name = '';
-                    Checkout.order.phone_number = '';
-                    Checkout.order.price = '';
-                    Checkout.order.lessons_booked = [];
+                    this.order.full_name = '';
+                    this.order.phone_number = '';
+                    this.order.price = '';
+                    this.order.lessons_booked = [];
                     this.cart = [];
                     // setting bookings back to 0
                     for (var i = 0; i < this.product.length; i++) {
@@ -183,7 +202,34 @@ export default {
                     }
                     this.showPage();
                 } else { alert('ERROR! Something went wrong'); }
-            }
+            },
+
+
+             // checks the name to be only letters
+            check_name(text) {
+                var letters = new RegExp(/^[A-Za-z]+ [A-Za-z]+$/);
+                console.log(text)
+                this.order.full_name = text;
+                return this.name = letters.test(text);
+            },
+
+                     // checks the phone number to be only numbers
+            check_phone(phone) {
+                var digits = new RegExp(/^\d+$/);
+                 console.log(phone);
+                console.log(digits.test(phone) && phone.length == 11);
+                this.order.phone_number = phone;
+                return this.phone = (digits.test(phone) && phone.length == 11);
+            },
+
+            shopping_price() {
+                this.price;
+                for (var i = 0; i < this.product.length; i++) {
+                    this.price += (this.product[i].booking * this.product[i].price);
+                }
+                return this.price;
+            },
+
   }
 }
 </script>

@@ -19,10 +19,10 @@
         <div class="customer-checkout">
             <h2> Order Information </h2>
             <p class="order_details"><strong>Full Name</strong></p>
-            <input id="name_checkout" v-on:keyup="check_name(this)" class="order_input" v-model="order.full_name"/>
+            <input id="name_checkout" v-on:keyup="checkName()" class="order_input" v-model="order.full_name"/>
             <p class="order_details"><strong>Phone Number</strong></p>
-            <input id="phone_checkout"  v-on:keyup="check_phone(this)" class="order_input" v-model="order.phone_number"/>
-            <button type="button" id="btn-submit" @click='submitOrder()' class="btn btn-success" :disabled="!check_name(order.full_name) || !check_phone(order.phone_number) || cart.length <= 0">Submit Order</button>
+            <input id="phone_checkout"  v-on:keyup="checkPhone()" class="order_input" v-model="order.phone_number"/>
+            <button type="button" id="btn-submit" @click='submitOrder()' class="btn btn-success" :disabled="!name || !phone || cart.length <= 0">Submit Order</button>
         </div>
         
     </div>
@@ -38,8 +38,8 @@ export default({
     props:[
             'cart',
             'product',
-            'check_name()',
-            'check_phone()'
+            'name',
+            'phone'
         ],
     data: () => ({
 
@@ -55,11 +55,11 @@ export default({
     methods: {
 
             productRemove(index){
-                this.$emit('productRemove', index);
+                return this.$emit('productRemove', index);
             },
 
             submitOrder(){
-                this.$emit('submitOrder')
+                return this.$emit('submitOrder');
             },
 
             shopping_price() {
@@ -71,15 +71,13 @@ export default({
             },
             
             // checks the name to be only letters
-            check_name() {
-                var letters = new RegExp(/^[A-Za-z]+ [A-Za-z]+$/);
-                return letters.test(this.order.full_name);
+            checkName() {
+                this.$emit('checkName', this.order.full_name);
             },
 
                 // checks the phone number to be only numbers
-            check_phone() {
-                var digits = new RegExp(/^\d+$/);
-                return digits.test(this.order.phone_number) && this.order.phone_number.length == 11;
+            checkPhone() {
+                this.$emit('checkPhone', this.order.phone_number);
             },
 
                 // retrieves number of bookings for the lesson

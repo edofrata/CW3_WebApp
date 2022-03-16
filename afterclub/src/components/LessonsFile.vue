@@ -117,7 +117,6 @@ export default({
 
   data: () => ({
  
-      // currentPage: Lessons,
       show_products: true,
       search_on: false,
       ascending: true,
