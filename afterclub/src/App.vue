@@ -111,7 +111,7 @@ export default {
                 // this.currentPage = this.currentPage === lessonsFile ? Checkout : lessonsFile;
                 this.show_products = this.show_products ? false : true;
             },
-
+ 
         // adds the product to the cart
         addProduct: function (item) {
             if (this.search_on) {
@@ -119,7 +119,7 @@ export default {
                 for (var i = 0; i < this.product.length; i++) {
                     if (this.searches[item]._id === this.product[i]._id) { this.no_double(i); }
                 }
-            } else {  console.log("SEARCH OFF "); this.no_double(item); }
+            } else {  console.log("SEARCH OFF "); this.no_double(item);}
 
         },
 
