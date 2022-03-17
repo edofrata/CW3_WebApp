@@ -115,10 +115,11 @@ export default {
         // adds the product to the cart
         addProduct: function (item) {
             if (this.search_on) {
+                console.log("SEARCH ON ")
                 for (var i = 0; i < this.product.length; i++) {
                     if (this.searches[item]._id === this.product[i]._id) { this.no_double(i); }
                 }
-            } else { this.no_double(item); }
+            } else {  console.log("SEARCH OFF "); this.no_double(item); }
 
         },
 
