@@ -7,7 +7,7 @@ import lesson from './components/LessonsFile.vue'
     lesson.productList = await response.json();
     startVue();
     console.log(lesson.productList)
-  })()
+ })()
 
 
 function startVue(){createApp(App).mount('#app')}

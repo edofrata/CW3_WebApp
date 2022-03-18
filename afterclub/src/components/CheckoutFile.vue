@@ -41,6 +41,7 @@ export default({
             'name',
             'phone'
         ],
+
     data: () => ({
 
       order: {
@@ -49,7 +50,7 @@ export default({
           price: '',
           lessons_booked: [],
       } 
-
+      
     }),
 
     methods: {
@@ -75,7 +76,7 @@ export default({
                 this.$emit('checkName', this.order.full_name);
             },
 
-                // checks the phone number to be only numbers
+            // checks the phone number to be only numbers
             checkPhone() {
                 this.$emit('checkPhone', this.order.phone_number);
             },

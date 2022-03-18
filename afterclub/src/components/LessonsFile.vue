@@ -130,21 +130,9 @@ export default({
           { spaces: "Availability" }],
   }),
         
-    // },
   props: [
-
             'product',
-            'canAddToCart()',
-            'AddToCart()',
-
-            // sort and search
-            'ascending_selected()',
-            'descending_selected()',
-            'sort_products()',
-            'search_lesson()',
-            'search_local()'
-
-        ],
+         ],
   methods : {
     
      async search_remote(lesson) {
@@ -281,8 +269,6 @@ export default({
                         }
                     }
                 } else { this.search_on = false; }
-
-
             }
   }
 })

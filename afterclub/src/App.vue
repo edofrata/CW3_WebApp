@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <head>
         <title> {{sitename}} </title>
         <link rel="stylesheet" href="../css/style.css">
@@ -21,7 +21,7 @@
                     </div>
                     
                     <div v-else>
-                        <checkout :price="price" :order="order" :phone="phone" :name="name" :product="product" :cart="cart" 
+                        <checkout :order="order" :phone="phone" :name="name" :product="product" :cart="cart" 
                                   @shoppingPrice='shopping_price' @checkPhone='check_phone' @checkName='check_name' @submitOrder='submit_order' @productRemove='item_remove' ></checkout>
                     </div>
                 </main>
@@ -50,11 +50,9 @@ export default {
       siteimage: 'https://cst3145-edo.herokuapp.com/images/logo.png',
       cart : [],
       product : [],
-    //   currentPage : lessonsFile,
       show_products : true,
       phone: false,
       name:false,
-      price : 0,
 
         order: {
             full_name: '',
@@ -67,15 +65,6 @@ export default {
     }   
   },
 
-  props: [
-      'addProduct()',
-       'no_double()', 
-       'Update()',
-       ' cartItemCount()',
-        'showPage()',
-        
-        ],  
-  
   created(){
     this.product = lessonsFile.productList;
   },
@@ -94,24 +83,24 @@ export default {
               .then(response => response.json())
       },
 
-          // adding a product
-            Order: function (collection, order) {
-                fetch("https://cst3145-edo.herokuapp.com/collection/" + collection, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(order),
-                })
-                    .then(response => response.json())
-            },
+        // adding a product
+        Order: function (collection, order) {
+            fetch("https://cst3145-edo.herokuapp.com/collection/" + collection, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order),
+            })
+                .then(response => response.json())
+        },
 
        // changing the current page attribute
-            showPage() {
-                // this.currentPage = this.currentPage === lessonsFile ? Checkout : lessonsFile;
-                this.show_products = this.show_products ? false : true;
-            },
- 
+        showPage() {
+            // this.currentPage = this.currentPage === lessonsFile ? Checkout : lessonsFile;
+            this.show_products = this.show_products ? false : true;
+        },
+
         // adds the product to the cart
         addProduct: function (item) {
             if (this.search_on) {
@@ -136,7 +125,8 @@ export default {
                           this.product[item].booking++;
                       }
                   }
-                  // if the count is still 0 means no double was found and can add to the cart
+
+             // if the count is still 0 means no double was found and can add to the cart
                   if (count == 0) {
                       this.cart.push(this.product[item]);
                       this.product[item].spaces--;
@@ -161,21 +151,20 @@ export default {
 
             },
 
-              //item remove and adds back the items
-            item_remove(item) {
-                for (var i = 0; i < this.product.length; i++) {
-                    if (this.product[i]._id === this.cart[item]._id) {
-                        this.product[i].booking--;
-                        this.product[i].spaces++;
-                        if (this.product[i].booking < 1) {
-                            this.cart.splice(item, 1);
-                            break;
-                        }
-
+            //item remove and adds back the items
+        item_remove(item) {
+            for (var i = 0; i < this.product.length; i++) {
+                if (this.product[i]._id === this.cart[item]._id) {
+                    this.product[i].booking--;
+                    this.product[i].spaces++;
+                    if (this.product[i].booking < 1) {
+                        this.cart.splice(item, 1);
+                        break;
                     }
                 }
+            }
 
-            },
+        },
 
 
              //  submit order function 
